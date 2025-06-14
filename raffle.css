@@ -50,3 +50,36 @@
 .winner-list-scrollable::-webkit-scrollbar-thumb:hover {
   background: #8b5cf6;
 }
+
+#past-winners-list {
+    /* Sets a maximum height equivalent to roughly 3 winner entries. */
+    /* Adjust this value if your items are taller or shorter. */
+    max-height: 16rem; 
+    
+    /* Enables a vertical scrollbar only when the content overflows. */
+    overflow-y: auto;
+    
+    /* Adds some space on the right to prevent the scrollbar from overlapping the text. */
+    padding-right: 0.5rem; 
+}
+
+/* --- Optional: Custom Scrollbar Styling --- */
+/* This part styles the scrollbar to better match your site's dark, modern aesthetic. */
+
+#past-winners-list::-webkit-scrollbar {
+    width: 6px; /* Makes the scrollbar thinner */
+}
+
+#past-winners-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05); /* A subtle track color */
+    border-radius: 10px;
+}
+
+#past-winners-list::-webkit-scrollbar-thumb {
+    background: rgba(167, 139, 250, 0.4); /* Scrollbar thumb with a violet tint */
+    border-radius: 10px;
+}
+
+#past-winners-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(167, 139, 250, 0.7); /* Darker violet on hover */
+}
