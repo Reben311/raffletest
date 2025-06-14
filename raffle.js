@@ -180,7 +180,8 @@ async function loadWinnerList() {
     // --- No changes needed to the Sanity fetch logic ---
     const projectId = 'jbuh6e9h';
     const dataset = 'production';
-    const query = encodeURIComponent('*[_type == "raffleWinner"]');
+    // This is the corrected line
+    const query = encodeURIComponent('*[_type == "raffleWinner"] | order(winDate desc)');
     const url = `https://${projectId}.api.sanity.io/v2021-10-21/data/query/${dataset}?query=${query}`;
 
     try {
