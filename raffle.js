@@ -159,15 +159,25 @@ async function loadWinnerList() {
             const winnerElement = document.createElement('div');
             winnerElement.className = 'p-3 bg-white/5 rounded-lg border border-white/10 flex justify-between items-center';
 
+            // Use 'Anonymous Winner' as a fallback if winnerName is missing
             const winnerName = winner.winnerName || 'Anonymous Winner';
-            const winningDate = new Date(winner.winningDate).toLocaleDateString('en-US', {
-                month: 'long',
-                year: 'numeric'
-            });
+
+            // Check if winningDate exists and is a valid date before formatting
+            let dateText = 'Date Not Available'; // A better default message
+            if (winner.winningDate) {
+                const winningDateObj = new Date(winner.winningDate);
+                // An invalid date's getTime() returns NaN (Not-a-Number)
+                if (!isNaN(winningDateObj.getTime())) {
+                    dateText = winningDateObj.toLocaleDateString('en-US', {
+                        month: 'long',
+                        year: 'numeric'
+                    });
+                }
+            }
 
             winnerElement.innerHTML = `
                 <span class="font-bold text-white">${winnerName}</span>
-                <span class="text-sm text-zinc-400">${winningDate}</span>
+                <span class="text-sm text-zinc-400">${dateText}</span>
             `;
             listContainer.appendChild(winnerElement);
         });
@@ -177,13 +187,3 @@ async function loadWinnerList() {
         listContainer.innerHTML = '<p class="text-red-400 text-center">Could not load winner information. Please try again later.</p>';
     }
 }
-
-// === Initialize everything when the document is ready ===
-document.addEventListener('DOMContentLoaded', () => {
-    init3D();
-    animate3D();
-    setupCountdown();
-    setupMobileMenu();
-    setupHeaderScroll();
-    loadWinnerList(); // Load the winner list
-});
