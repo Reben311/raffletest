@@ -1,0 +1,52 @@
+/* Custom Styles for Raffle Page */
+
+/* Countdown Timer Styling */
+.timer-box {
+    @apply flex flex-col p-4 bg-black/20 rounded-xl;
+}
+
+.timer-value {
+    @apply text-4xl md:text-6xl font-extrabold tracking-tighter;
+    font-variant-numeric: tabular-nums;
+}
+
+.timer-label {
+    @apply text-sm md:text-base text-zinc-400 uppercase tracking-widest mt-1;
+}
+
+/* Past Winners List */
+#past-winners-list li {
+    @apply p-3 bg-white/5 rounded-lg border border-white/10;
+}
+
+/* In testing/raffle.css */
+
+.winner-list-scrollable {
+  /* Set a max-height. Adjust this value to show more or fewer items before scrolling. */
+  max-height: 280px;
+
+  /* Add the vertical scrollbar only when needed */
+  overflow-y: auto;
+
+  /* Add a little padding to the right to make space for the scrollbar */
+  padding-right: 12px;
+}
+
+/* --- Optional: Custom Scrollbar Styling for a premium look --- */
+.winner-list-scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.winner-list-scrollable::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.winner-list-scrollable::-webkit-scrollbar-thumb {
+  background: #A78BFA; /* Violet color from your theme */
+  border-radius: 10px;
+}
+
+.winner-list-scrollable::-webkit-scrollbar-thumb:hover {
+  background: #8b5cf6;
+}

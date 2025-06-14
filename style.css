@@ -1,0 +1,133 @@
+/* Custom Styles for Merged Theme */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #000000;
+    color: #E4E4E7; /* Tailwind Zinc 200 */
+    overflow-x: hidden;
+}
+
+/* Container for the 3D canvas */
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    background: radial-gradient(ellipse at 50% 50%, rgba(26, 3, 51, 0.9) 0%, rgba(0, 0, 0, 1) 100%);
+}
+
+/* Gradient text effect */
+.gradient-text {
+    background: linear-gradient(90deg, #A78BFA, #F472B6, #60A5FA);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+/* REFINED: Glassmorphism effect for a more blended look */
+.glass-effect {
+    background: rgba(22, 17, 32, 0.25); /* Darker, more transparent purple tint */
+    backdrop-filter: blur(24px); /* Increased blur */
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Even more subtle border */
+}
+
+/* Gradient border effect wrapper */
+.gradient-border-wrapper {
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    border-radius: 1rem; /* 16px */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; /* Ensure wrapper takes full height for consistent card sizes */
+}
+
+.gradient-border-wrapper:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(167, 139, 250, 0.1);
+}
+
+/* Scroll-in animation classes */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Modal styles */
+#bet-modal {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
+    display: flex; /* Use flex for centering */
+}
+
+#bet-modal.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}
+
+#modal-content {
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+#bet-modal.visible #modal-content {
+    transform: scale(1);
+}
+/* Bento Grid Content Alignment */
+.gradient-border-wrapper .glass-effect {
+    /* This ensures content inside is always full height */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Live Sports Ticker */
+.marquee-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.marquee-content {
+    display: flex;
+    animation: marquee 40s linear infinite;
+    will-change: transform;
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0%);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* --- Premium "How It Works" Steps --- */
+.step-number {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #A78BFA, #6D28D9);
+    color: white;
+    font-size: 2rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 4px solid #000;
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+    z-index: 10;
+}

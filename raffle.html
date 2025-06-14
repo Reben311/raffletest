@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypebet Monthly Raffle - Win $300!</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="raffle.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="antialiased">
+
+    <!-- 3D Background Canvas -->
+    <div id="canvas-container"></div>
+
+    <!-- Main Content Wrapper -->
+    <div class="relative z-10">
+
+        <!-- Header -->
+        <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+            <div class="container mx-auto px-6 py-4">
+                <nav class="flex justify-between items-center">
+                    <a href="index.html" class="text-xl font-bold">Hypebet</a>
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="index.html#pricing" class="hover:text-violet-300 transition-colors">Pricing</a>
+                        <a href="index.html#socials" class="hover:text-violet-300 transition-colors">Contact</a>
+                        <a href="raffle.html" class="text-violet-300 transition-colors font-semibold">Raffle</a>
+                    </div>
+                    <a href="index.html#pricing" class="hidden md:block bg-white text-black font-semibold px-4 py-2 rounded-lg hover:bg-zinc-200 transition-colors">
+                        Subscribe
+                    </a>
+                    <button id="menu-toggle" class="md:hidden p-2 text-white z-50">
+                        <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        <svg id="menu-icon-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </nav>
+            </div>
+        </header>
+        
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-40 glass-effect flex-col items-center justify-center space-y-8 text-xl">
+            <a href="index.html#pricing" class="hover:text-violet-300 transition-colors">Pricing</a>
+            <a href="index.html#socials" class="hover:text-violet-300 transition-colors">Contact</a>
+             <a href="raffle.html" class="text-violet-300 transition-colors font-semibold">Raffle</a>
+            <a href="index.html#pricing" class="mt-4 bg-white text-black font-semibold px-6 py-3 rounded-lg hover:bg-zinc-200 transition-colors">
+                Subscribe
+            </a>
+        </div>
+
+        <main class="pt-24">
+            <!-- Raffle Countdown Section -->
+            <section class="py-16 lg:py-24">
+                <div class="container mx-auto px-6 text-center">
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
+                        <span class="gradient-text">$300 Monthly Raffle</span>
+                    </h1>
+                    <p class="mt-4 text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto">
+                        One lucky premium member wins every single month. The next draw is happening soon!
+                    </p>
+
+                    <!-- Countdown Timer -->
+                    <div class="mt-12">
+                        <div class="glass-effect max-w-3xl mx-auto rounded-2xl p-6 md:p-8 border border-white/10">
+                            <p class="text-zinc-300 text-lg mb-6">Next Drawing In</p>
+                            <div id="countdown-timer" class="flex justify-center items-center gap-2 md:gap-4 text-white">
+                                <div class="timer-box">
+                                    <span id="days" class="timer-value">00</span>
+                                    <span class="timer-label">Days</span>
+                                </div>
+                                <span class="timer-separator">:</span>
+                                <div class="timer-box">
+                                    <span id="hours" class="timer-value">00</span>
+                                    <span class="timer-label">Hours</span>
+                                </div>
+                                <span class="timer-separator">:</span>
+                                <div class="timer-box">
+                                    <span id="minutes" class="timer-value">00</span>
+                                    <span class="timer-label">Minutes</span>
+                                </div>
+                                <span class="timer-separator">:</span>
+                                <div class="timer-box">
+                                    <span id="seconds" class="timer-value">00</span>
+                                    <span class="timer-label">Seconds</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- How to Enter Section -->
+            <section class="pb-16 lg:pb-24">
+                 <div class="container mx-auto px-6">
+                     <div class="max-w-2xl mx-auto">
+                        <div class="gradient-border-wrapper">
+                            <div class="glass-effect rounded-2xl p-8 text-left h-full">
+                                <h3 class="text-2xl font-bold text-white mb-4 text-center">How To Enter</h3>
+                                <ul class="space-y-4 text-zinc-300">
+                                    <li class="flex items-start">
+                                        <svg class="w-6 h-6 text-violet-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        <span>Become a <strong class="text-white">Premium Subscriber</strong> to our betting community.</span>
+                                    </li>
+                                     <li class="flex items-start">
+                                        <svg class="w-6 h-6 text-violet-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        <span>Stay subscribed for the entire month. That's it! You're automatically entered.</span>
+                                    </li>
+                                     <li class="flex items-start">
+                                        <svg class="w-6 h-6 text-violet-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        <span>Winners are announced on the 1st of every month in our Discord.</span>
+                                    </li>
+                                </ul>
+                                <a href="index.html#pricing" class="block w-full text-center mt-8 py-3 rounded-lg font-semibold bg-violet-500 hover:bg-violet-600 transition-colors text-white">
+                                    Go Premium Now
+                                </a>
+                            </div>
+                        </div>
+                     </div>
+                 </div>
+            </section>
+
+            <section class="pb-16 lg:pb-24">
+                <div class="container mx-auto px-6">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="gradient-border-wrapper">
+                            <div class="glass-effect rounded-2xl p-8 text-left h-full">
+                                <h3 class="text-2xl font-bold text-white mb-6 text-center">Recent Winner</h3>
+                    
+                                <div id="past-winners-list" class="space-y-4">
+                                    <div id="past-winners-list" class="space-y-4 winner-list-scrollable"></div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-12 border-t border-zinc-800/50">
+            <div class="container mx-auto px-6 text-center text-zinc-500">
+                <p>&copy; 2025 Hypebet. All Rights Reserved.</p>
+            </div>
+        </footer>
+
+    </div>
+    <!-- External JavaScript -->
+    <script type="module" src="raffle.js"></script>
+
+</body>
+</html>
