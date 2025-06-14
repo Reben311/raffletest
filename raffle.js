@@ -1,48 +1,33 @@
 // Import Three.js from a CDN for the background effect
 import * as THREE from 'https://cdn.skypack.dev/three@0.132.2';
 
-// === Three.js Scene Setup (Copied from main script for background) ===
+// === Three.js Scene Setup ===
 let scene, camera, renderer, particles;
 let mouseX = 0, mouseY = 0;
-
 const container = document.getElementById('canvas-container');
 
 function init3D() {
     if (!container) return;
-
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.z = 300; 
-
+    camera.position.z = 300;
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
-
     const particleCount = 2000;
     const positions = new Float32Array(particleCount * 3);
-    
     for (let i = 0; i < particleCount; i++) {
         const i3 = i * 3;
         positions[i3] = (Math.random() - 0.5) * 1000;
         positions[i3 + 1] = (Math.random() - 0.5) * 1000;
         positions[i3 + 2] = (Math.random() - 0.5) * 1000;
     }
-
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    
-    const material = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 0.8,
-        blending: THREE.AdditiveBlending,
-        transparent: true,
-        opacity: 0.6
-    });
-
+    const material = new THREE.PointsMaterial({ color: 0xffffff, size: 0.8, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.6 });
     particles = new THREE.Points(geometry, material);
     scene.add(particles);
-
     document.addEventListener('mousemove', onDocumentMouseMove, false);
     window.addEventListener('resize', onWindowResize, false);
 }
@@ -62,16 +47,12 @@ function onDocumentMouseMove(event) {
 function animate3D() {
     requestAnimationFrame(animate3D);
     if (!particles || !camera || !scene || !renderer) return;
-
     particles.rotation.y += 0.00015;
-
     camera.position.x += (mouseX * 0.0005 - camera.position.x) * 0.02;
     camera.position.y += (-mouseY * 0.0005 - camera.position.y) * 0.02;
     camera.lookAt(scene.position);
-    
     renderer.render(scene, camera);
 }
-
 
 // === Raffle Countdown Logic ===
 function setupCountdown() {
@@ -79,53 +60,39 @@ function setupCountdown() {
     const hoursEl = document.getElementById('hours');
     const minutesEl = document.getElementById('minutes');
     const secondsEl = document.getElementById('seconds');
-
     if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
-    
-    // Set the date for the next raffle drawing
-    // This calculates the first day of the next month
     const now = new Date();
     const targetDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-
     function updateCountdown() {
         const currentTime = new Date();
         const diff = targetDate - currentTime;
-
         if (diff <= 0) {
-            // Handle what happens when the countdown is over
             daysEl.innerText = '00';
             hoursEl.innerText = '00';
             minutesEl.innerText = '00';
             secondsEl.innerText = '00';
             clearInterval(timerInterval);
-            // Optionally, show a "Winner Announced!" message
             return;
         }
-
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-        // Add leading zeros if the number is less than 10
         daysEl.innerText = d < 10 ? '0' + d : d;
         hoursEl.innerText = h < 10 ? '0' + h : h;
         minutesEl.innerText = m < 10 ? '0' + m : m;
         secondsEl.innerText = s < 10 ? '0' + s : s;
     }
-
     const timerInterval = setInterval(updateCountdown, 1000);
-    updateCountdown(); // Initial call to avoid 1-second delay
+    updateCountdown();
 }
 
-
-// === Mobile Menu Toggle (Copied from main script) ===
+// === Mobile Menu Toggle ===
 function setupMobileMenu() {
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     const openIcon = document.getElementById('menu-icon-open');
     const closeIcon = document.getElementById('menu-icon-close');
-
     if (menuToggle && mobileMenu && openIcon && closeIcon) {
         menuToggle.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
@@ -133,7 +100,6 @@ function setupMobileMenu() {
             openIcon.classList.toggle('hidden');
             closeIcon.classList.toggle('hidden');
         });
-
         mobileMenu.addEventListener('click', (e) => {
             if (e.target.tagName === 'A') {
                 mobileMenu.classList.add('hidden');
@@ -145,22 +111,72 @@ function setupMobileMenu() {
     }
 }
 
-// === Header Scroll Effect (Copied from main script) ===
+// === Header Scroll Effect ===
 function setupHeaderScroll() {
     const header = document.getElementById('main-header');
     if (header) {
         window.addEventListener('scroll', () => {
             if (window.scrollY > 20) {
-                header.classList.add('glass-effect');
-                header.classList.add('shadow-lg');
+                header.classList.add('glass-effect', 'shadow-lg');
             } else {
-                header.classList.remove('glass-effect');
-                header.classList.remove('shadow-lg');
+                header.classList.remove('glass-effect', 'shadow-lg');
             }
         });
     }
 }
 
+// === Sanity Winner List Loading ===
+async function loadWinnerList() {
+    const listContainer = document.getElementById('past-winners-list');
+    if (!listContainer) return;
+
+    // Show a loading state
+    listContainer.innerHTML = '<p class="text-zinc-400 text-center">Loading recent winners...</p>';
+
+    const projectId = 'jbuh6e9h';
+    const dataset = 'production';
+    // Fetch relevant fields from your 'raffleWinner' documents
+    const query = encodeURIComponent('*[_type == "raffleWinner"] | order(_createdAt desc) [0...20] {winnerName, winningDate}');
+    const url = `https://${projectId}.api.sanity.io/v2021-10-21/data/query/${dataset}?query=${query}`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const { result } = await response.json();
+
+        // Clear loading message
+        listContainer.innerHTML = '';
+
+        if (!result || result.length === 0) {
+            listContainer.innerHTML = '<p class="text-zinc-400 text-center">No winners announced yet. Check back soon!</p>';
+            return;
+        }
+
+        // Create and append winner elements
+        result.forEach(winner => {
+            const winnerElement = document.createElement('div');
+            winnerElement.className = 'p-3 bg-white/5 rounded-lg border border-white/10 flex justify-between items-center';
+
+            const winnerName = winner.winnerName || 'Anonymous Winner';
+            const winningDate = new Date(winner.winningDate).toLocaleDateString('en-US', {
+                month: 'long',
+                year: 'numeric'
+            });
+
+            winnerElement.innerHTML = `
+                <span class="font-bold text-white">${winnerName}</span>
+                <span class="text-sm text-zinc-400">${winningDate}</span>
+            `;
+            listContainer.appendChild(winnerElement);
+        });
+
+    } catch (error) {
+        console.error('Error loading winner list:', error);
+        listContainer.innerHTML = '<p class="text-red-400 text-center">Could not load winner information. Please try again later.</p>';
+    }
+}
 
 // === Initialize everything when the document is ready ===
 document.addEventListener('DOMContentLoaded', () => {
@@ -169,34 +185,5 @@ document.addEventListener('DOMContentLoaded', () => {
     setupCountdown();
     setupMobileMenu();
     setupHeaderScroll();
-});
-
-// In raffle.js
-
-// In testing/raffle.js
-
-async function loadWinnerList() {
-    const listContainer = document.getElementById('past-winners-list');
-    if (!listContainer) return;
-
-    const projectId = 'jbuh6e9h';
-    const dataset = 'production';
-
-    // UPDATED QUERY: Sorts by newest first and grabs the top 20.
-    const query = encodeURIComponent('*[_type == "raffleWinner"] | order(_createdAt desc) [0...20]');
-
-    const url = `https://${projectId}.api.sanity.io/v2021-10-21/data/query/${dataset}?query=${query}`;
-
-    // ... The rest of your function remains exactly the same ...
-    try {
-        const response = await fetch(url);
-        // etc...
-    } catch (error) {
-        // etc...
-    }
-}
-// Make sure you are calling the function when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    // ... your other functions
-    loadWinnerList();
+    loadWinnerList(); // Load the winner list
 });
