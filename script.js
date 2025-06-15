@@ -229,6 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupScrollAnimations();
     setupHeaderScroll();
     setupBetModal();
+    setupPageTransitions(); // <-- Add this line
 });
 
 // === Page Transition Logic ===
@@ -241,10 +242,14 @@ function setupPageTransitions() {
         preloader.classList.add('preloader-hidden');
     });
 
-    // 2. Intercept link clicks to fade out before navigating
+    // 2. Intercept link clicks to fade in preloader before navigating
     document.querySelectorAll('a').forEach(link => {
-        // Exclude links that open in a new tab or are not local
-        if (link.target === '_blank' || link.href.startsWith('#') || !link.href.includes(window.location.hostname)) {
+        const href = link.getAttribute('href');
+        const isLocalLink = link.href.includes(window.location.hostname) || !link.href.startsWith('http');
+
+        // We only want to add the effect to local page links
+        // Exclude links that open in new tabs or are just anchors on the current page.
+        if (link.target === '_blank' || (href && href.startsWith('#')) || !isLocalLink) {
             return;
         }
 
@@ -256,16 +261,17 @@ function setupPageTransitions() {
             // Make the preloader visible again
             preloader.classList.remove('preloader-hidden');
 
-            // Wait for the fade-out animation to finish, then navigate
+            // Wait for the fade-in animation to finish, then navigate
             setTimeout(() => {
                 window.location.href = destination;
-            }, 500); // This should match the CSS transition duration
+            }, 500); // This duration should match the CSS transition
         });
     });
 }
 
 // --- Timeline Animation Trigger ---
 document.addEventListener('DOMContentLoaded', () => {
+
     const timelineSection = document.getElementById('timeline-section');
 
     if (timelineSection) {
