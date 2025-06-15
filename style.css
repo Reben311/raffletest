@@ -131,3 +131,11 @@ body {
     box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
     z-index: 10;
 }
+
+/* Add these styles to testing/style.css */
+
+#preloader.preloader-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Makes the overlay unclickable when hidden */
+}
