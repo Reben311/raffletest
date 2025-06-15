@@ -169,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupCountdown();
     setupMobileMenu();
     setupHeaderScroll();
+    loadWinnerList();
     setupPageTransitions(); // <-- Add this line
 });
 
