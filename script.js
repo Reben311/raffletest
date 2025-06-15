@@ -232,23 +232,30 @@ document.addEventListener('DOMContentLoaded', () => {
     setupPageTransitions(); // <-- Add this line
 });
 
-// === Page Transition Logic ===
+// === Page Transition Logic (with Failsafe) ===
 function setupPageTransitions() {
     const preloader = document.getElementById('preloader');
     if (!preloader) return;
 
-    // 1. Fade the preloader out on initial page load
-    window.addEventListener('load', () => {
+    // A function to reliably hide the preloader
+    const hidePreloader = () => {
         preloader.classList.add('preloader-hidden');
-    });
+    };
 
-    // 2. Intercept link clicks to fade in preloader before navigating
+    // Hide the preloader when the page is fully loaded
+    window.addEventListener('load', hidePreloader);
+
+    // Failsafe: If the page takes more than 3 seconds to load, hide
+    // the preloader anyway. This prevents the user from getting stuck.
+    setTimeout(hidePreloader, 3000);
+
+    // Intercept link clicks to fade in preloader before navigating
     document.querySelectorAll('a').forEach(link => {
         const href = link.getAttribute('href');
+        // Check if the link is for a local page
         const isLocalLink = link.href.includes(window.location.hostname) || !link.href.startsWith('http');
 
-        // We only want to add the effect to local page links
-        // Exclude links that open in new tabs or are just anchors on the current page.
+        // Exclude links that open in new tabs or are just anchors on the current page
         if (link.target === '_blank' || (href && href.startsWith('#')) || !isLocalLink) {
             return;
         }
