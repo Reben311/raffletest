@@ -169,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupCountdown();
     setupMobileMenu();
     setupHeaderScroll();
+    setupPageTransitions(); // <-- Add this line
 });
 
 // In testing/raffle.js
